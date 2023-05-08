@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Welcome Page</title>
+        <title>Sign Up</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
       </head>
 
@@ -14,32 +14,34 @@
                     <div class="row d-flex justify-content-center align-items-center h-100">
                     <div class="col-12 col-md-8 col-lg-6 col-xl-5">
                         <div class="card shadow-2-strong" style="border-radius: 1rem;">
+                        <form>
                         <div class="card-body p-5 text-center">
                             <!--Sign up-->
                             <h3 class="mb-5">Sign Up</h3>
                 
                             <div class="form-outline mb-4">
-                                <input type="text" id="firstName" class="form-control form-control-lg" />
+                                <input type="text" id="firstName"  name="userFirstName" class="form-control form-control-lg" />
                                 <label class="form-label" for="firstName">First Name</label>
                             </div>
                             <div class="form-outline mb-4">
-                                <input type="text" id="lastName" class="form-control form-control-lg" />
+                                <input type="text" id="lastName" name="userLastName" class="form-control form-control-lg" />
                                 <label class="form-label" for="lastName">Last Name</label>
                             </div>
 
                             <div class="form-outline mb-4">
-                                <input type="email" id="typeEmailX-2" class="form-control form-control-lg" />
+                                <input type="email" id="typeEmailX-2" name="userEmail" class="form-control form-control-lg" />
                                 <label class="form-label" for="typeEmailX-2">Email</label>
                             </div>
                 
                             <div class="form-outline mb-4">
-                                <input type="password" id="typePasswordX-2" class="form-control form-control-lg" />
+                                <input type="password" id="typePasswordX-2" name="userPassword" class="form-control form-control-lg" />
                                 <label class="form-label" for="typePasswordX-2">Password</label>
                             </div>
                 
-                            <button onclick = "window.location.href='index.html';" class="btn btn-primary btn-lg btn-block" type="submit">Login</button>
+                            <button class="btn btn-primary btn-lg btn-block" type="submit">Login</button>
                         </div>
                         </div>
+                    </form>
                     </div>
                     </div>
                 </div>
@@ -51,8 +53,6 @@
         <script src="assets/api.js"></script>
         <script src="assets/database.js"></script>
         <script src="app.js"></script>
-        <script>
-            quotes.index();
-        </script>
+        <script>quotes.createUser()</script>
     </body>
 </html>

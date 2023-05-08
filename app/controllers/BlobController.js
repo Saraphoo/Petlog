@@ -1,8 +1,10 @@
 const blob = require('../models/Blob');
 const saveBlob = function(req , res){
     let blobData = req.body;
+    console.log(req.auth);
+    let userId = req.auth.id;
     headers(res);
-    const newBlobData = new blob({ data: blobData });
+    const newBlobData = new blob({ data: blobData, user: userId});
     newBlobData.save();
     res.status(200).send({id: newBlobData._id});
 }
@@ -17,6 +19,15 @@ const getBlob = async function(req, res){
     }else{
         res.status(200).send(blobData.data);
     }
+}
+const getUserBlob = async function(req , res) {
+    let userId = req.auth.id;
+    console.log(userId)
+    const userBlob = await blob.findOne({user: userId});
+    if(!userBlob){
+        res.status(200).send({});
+    }
+    res.status(200).send({data: userBlob.data , id: userBlob.id});
 }
 
 const deleteBlob = async function(req, res ){
@@ -50,4 +61,10 @@ const headers = function(res) {
     res.setHeader("Access-Control-Allow-Headers", "*");
 }
 
-module.exports = {saveBlob,getBlob,deleteBlob,updateBlob};
+module.exports = {
+    saveBlob,
+    getBlob,
+    deleteBlob,
+    updateBlob,
+    getUserBlob
+};
