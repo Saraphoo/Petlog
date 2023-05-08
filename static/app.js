@@ -1,25 +1,5 @@
 let quotes = {
 	documentID: sessionStorage.getItem('documentId'),
-	index: function () {
-		database.index(quotes.documentID, function (item) {
-			console.log(item);
-			for (let i = 0; i < item.length; i++) {
-				let user = item[i];
-				let el = document.createElement('div');
-
-				el.innerHTML = `
-				<div class="card row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3 style="max-width:400px";">
-				<div class="card-body">
-			<h5 class="card-title" style="color: #FFCD95; font-size:45px;">${user.firstName} ${user.lastName}</h5>
-			  <p class="card-text" style="color: #FFCD95; font-size:20px">${user.emailAddress}</p>
-			  <a href="userDetail.html?userID=${user.userID}" class="card-link">Card link</a>
-			</div>`;
-
-				document.getElementById('userdetails').append(el);
-			}
-		}
-		)
-	},
 	// For fetching the info for petDetail page
 	petdetail: function (petID) {
 		// The info from the JSONBlob at the index is passed in as item, should be 1 pet from the array.
@@ -30,6 +10,7 @@ let quotes = {
 					let pet = item[i];
 					document.getElementById('loading').style.display = 'none';
 					// document.getElementById('pet-photo').innerHTML=`<div id="petPhoto" class="col">${pet.petPhoto}</div>`;
+					document.getElementById('navigation').innerHTML=`<a href="userDetail.html">Back to User</a> |  <a id="btn-edit" href="petEdit.html?petID=${cPetID}">Edit pet</a> | <a href="addMedication.html?petID=${cPetID}">Add Medication</a> |<button type="button" id="btn-delete">Delete pet</button>`
 					document.getElementById('pet-ident').innerHTML = `<div class="row justify-content-start">
 							<div id="petID" class="col-4">ID #: ${pet.petID}</div>
 							<div id="petName" class="col-4">Name: ${pet.petName}</div>
@@ -43,7 +24,12 @@ let quotes = {
 							<div id="petDoB" class="col-4">Date of Birth: ${pet.petDoB}</div>
 							<div id="petWeight" class="col-4">Weight: ${pet.petWeight}</div>
 						</div>`;
-					document.getElementById('btn-edit').setAttribute('href', `petEdit.html?petID=${cPetID}`);
+						document.getElementById('pet-stats').innerHTML = `<div class="row justify-content-start">
+							<div id="petSex" class="col-4">Sex: ${pet.petSex}</div>
+							<div id="petDoB" class="col-4">Date of Birth: ${pet.petDoB}</div>
+							<div id="petWeight" class="col-4">Weight: ${pet.petWeight}</div>
+						</div>`;
+					
 				}
 			}
 
@@ -51,25 +37,26 @@ let quotes = {
 			// creates a card and APPENDS it to the innerHTML to create multiple cards.
 			// run a loop through medications, check that userID and petID in medication object matches current pet.
 			database.medicationArray(quotes.documentID, cPetID, function (item) {
-				for (let i = 0; i < item.length; i++) {
+				if(item.length > -1){
+					for (let i = 0; i < item.length; i++) {
 					// if PetID matches, add medication page
-					if (item[i].petID == cPetID) {
+						if (item[i].petID == cPetID) {
 						document.getElementById('medication-pages').innerHTML += `<div "col-sm-6">
-							<div class="card" style="width: 18rem;">
-							<div class="card-body">
-							<h5 class="card-title">${item[i].medicationName}</h5>
-							<h6 class="card-subtitle mb-2 text-muted">${item[i].medType}</h6>
-							<p class="card-text">Dose Amount: ${item[i].dosage}</p><p class="card-text">Timing: ${item[i].numberOfDailyDoses}</p>
-							<p class="card-text">Notes: ${item[i].medNotes}</p>
+								<div class="card" style="width: 18rem;">
+								<div class="card-body">
+								<h5 class="card-title">${item[i].medName}</h5>
+								<h6 class="card-subtitle mb-2 text-muted">${item[i].medType}</h6>
+								<p class="card-text">Dose Amount: ${item[i].medDosage}</p><p class="card-text">Timing: ${item[i].numberOfDailyDoses}</p>
+								<p class="card-text">Notes: ${item[i].medNotes}</p>
 								</div>
-							</div>
-						</div>`
+								</div>
+							</div>`
+						}
 					}
-					else {
-						break;
+				} else {
+						document.getElementById('medication-pages').innerHTML += `<div "col-sm-6"><a href="addMedication.html?petID=${cPetID}">Add Medication</a></div`
 					}
-				}
-			});
+				});
 
 			let deleteButton = document.getElementById('btn-delete');
 			deleteButton.addEventListener('click', function () {
@@ -101,7 +88,7 @@ let quotes = {
 				}).then(function (response) {
 					console.log(response);
 					api.token = response.data.token;
-					window.location.href='welcomePage.html';
+					window.location.href='index.html';
 				  })
 				  .catch(function (error) {
 					console.log(error);

@@ -38,14 +38,15 @@ async function fetchFunction(){
 }
 // write information to html divs passing in the two const med and pet
 function writeToDiv(med,pet){
+    console.log(med);
     document.getElementById('medInfo').innerHTML +=`
     <div id="medName" class="container">
         <h1>${med.medicationName}</h1>
         <div id="medicationDetails" class="container">
-            Medication ID: ${med.medicationID}<br />
+            Medication ID: ${med.medID}<br />
             Medication Type: ${med.medType}<br />
             Pet: ${pet.petName}<br />
-            Dosage: ${med.dosage}<br />
+            Dosage: ${med.medDosage}<br />
             Number of Doses a day: ${med.numberOfDailyDoses}<br />
             Medication Notes: ${med.medNotes}<br />
     </div>

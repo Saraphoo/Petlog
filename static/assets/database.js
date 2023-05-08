@@ -1,11 +1,11 @@
 const database={
-	index:function(documentID,callback){
-		api.GET(documentID,function(response){
-			callback(response.data.users);
-		});
-	},
 	// specifically for pet detail.
 	petDetail:function(documentID,petID,callback){
+		api.GET(documentID,function(response){
+			callback(response.data.pets);
+		});
+	},
+	medicationArray:function(documentID,petID,callback){
 		api.GET(documentID,function(response){
 			callback(response.data.pets);
 		});
