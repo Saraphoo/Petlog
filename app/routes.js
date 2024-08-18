@@ -1,5 +1,6 @@
 const userController = require('./controllers/UserController');
-const blobController = require('./controllers/BlobController');
+const PetController = require('./controllers/PetController');
+const MedController = require('./controllers/MedController');
 const { expressjwt: jwt } = require("express-jwt");
 
 require('dotenv').config();
@@ -14,12 +15,17 @@ exports.routes = function (app) {
             next(err);
         }
     });
+
     app.post('/api/user/create', userController.create);
+    app.post('/api/pet', PetController.savePet);
+    app.post('/api/med/:petId', MedController.saveMed);
+    app.put('/api/pet/:id', PetController.updatePet);
+    app.put('/api/med/:id', MedController.updateMed);
+    app.delete('/api/pet/:id', PetController.deletePet);
+    app.delete('/api/med/:id', MedController.deleteMed);
+    app.get('/api/pet/:id' , PetController.getPet);
+    app.get('/api/pet/user', PetController.getUserPet);
+    app.get('/api/med/:id', MedController.getMed);
     app.get('/api/user/info', userController.getUser);
     app.post('/api/login', userController.login);
-    app.post('/api/blob', blobController.saveBlob);
-    app.get('/api/blob/user', blobController.getUserBlob)
-    app.get('/api/blob/:id', blobController.getBlob);
-    app.delete('/api/blob/:id', blobController.deleteBlob);
-    app.put('/api/blob/:id', blobController.updateBlob);
 }

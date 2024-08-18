@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 
+
 const UserSchema = mongoose.Schema({
     email: {
         type: String,
@@ -13,7 +14,8 @@ const UserSchema = mongoose.Schema({
     password: {
         type: String,
         required: true
-    }
+    },
+    pets: [{type: mongoose.Schema.Types.ObjectID, ref: "pet"}]
 },
     {
         timestamps: true // add createdAt and updatedAt timestamps

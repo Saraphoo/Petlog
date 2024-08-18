@@ -168,7 +168,7 @@ let quotes = {
 					document.querySelector('form input[name=petWeight]').value = item[i].petWeight;
 				}
 				else {
-					// do nothing
+					// Print error
 				}
 			}
 

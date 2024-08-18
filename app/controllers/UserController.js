@@ -1,12 +1,12 @@
 const User = require('../models/User');
 const bcrypt = require('bcrypt');
 const jwt = require("jsonwebtoken");
-const Blob = require('../models/Blob');
+const Pet = require('../models/pet');
 
 require('dotenv').config();
 
 const create = function (req, res) {
-    console.log('hi');
+    //console.log('hi');
     let email = req.body.email;
     let password = req.body.password;
     let firstName = req.body.firstName;
@@ -19,8 +19,6 @@ const create = function (req, res) {
     
     try {
         newUser.save();
-        const newBlobData = new Blob({data:{pets:[], medications:[]}, user: newUser.id});
-        newBlobData.save();
         res.status(200).send({ message: "user was created" });
     } catch (error) {
         res.status(500).send({ message: error.message });
@@ -30,7 +28,7 @@ const create = function (req, res) {
 const login = async function (req, res) {
     let email = req.body.email;
     let password = req.body.password;
-    console.log(email, password);
+
     try {
         let existingUser = await User.findOne({ email: email });
         if(!existingUser) {
@@ -53,7 +51,8 @@ const login = async function (req, res) {
 
 }
 const getUser = async function (req, res) {
-  let user =  await User.findById(req.auth.id);
+  let user =  await User.findById(req.auth._id);
+  console.log(user);
   res.status(200).send(user);
 }
 

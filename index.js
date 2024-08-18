@@ -9,6 +9,8 @@ const jsonParser = bodyParser.json();
 app.use(jsonParser);
 const mongoose = require('mongoose');
 mongoose.connect(process.env.MONGODB_DATABASE_URL);
-app.listen(process.env.PORT || 8080);
-console.log("app is listening on port:" + process.env.PORT);
+let port = process.env.PORT || 3000
+app.listen(port);
+
+console.log("app is listening on port:" + port);
 routes.routes(app);

@@ -1,5 +1,5 @@
 let api={
-	endpoint:'http://localhost:3000/api/blob/',
+	endpoint:'http://localhost:3000/api/user/info',
 	token: sessionStorage.getItem('token'),
 	GET:function(documentID,callback){
 		axios.get(`${api.endpoint}${documentID}`, { headers: { Authorization: `Bearer ${api.token}` } }).then(function(response){

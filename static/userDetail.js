@@ -1,41 +1,48 @@
-
-// 
-//Function to get json
 async function fetchFunction() {
-    let responseUserData = await axios.get('http://localhost:3000/api/blob/user',
-        { headers: { Authorization: `Bearer ${api.token}` } }
-    );
+    try {
+        // First API call to get the user's data, including pets
+        let responseUserData = await axios.get('http://localhost:3000/api/user/info', {
+            headers: { Authorization: `Bearer ${api.token}` }
+        });
 
-    sessionStorage.setItem('documentId', responseUserData.data.id);
-    const response = api.GET(responseUserData.data.id, async function (response) {
-        //get user's ID
-        const userID = getAllUrlParams().userid;
-        //Create an Array containting the user object with the matching ID
-        let responseUser = await axios.get('http://localhost:3000/api/user/info',
-        { headers: { Authorization: `Bearer ${api.token}` } });
-        let user = responseUser.data;
-        //Set the only element in created array to a constant
-    
-        console.log(user,response.data.pets);
-        //Create an Array containting the pet object with the matching ID
-        let pets = response.data.pets;
-        //Set the only element in created array to a constant
-        const pet = pets[0];
-        writeToDiv(user, pet);
-    });
+        // Save the document ID
+        sessionStorage.setItem('documentId', responseUserData.data._id);
+        console.log(responseUserData.data._id);
+
+        // Extract user and pets data
+        let user = responseUserData.data;
+        let userPets = user.pets || []; // Assuming `pets` is an array
+
+        // Display the data in the HTML
+        writeToDiv(user, userPets);
+
+        document.getElementById('loading').style.display = 'none';
+    } catch (error) {
+        console.error('Error fetching user details:', error);
+        document.getElementById('loading').textContent = 'Failed to load user details.';
+    }
 }
-// write information to html divs passing in pet const
-function writeToDiv(user, pet) {
-    document.getElementById('loading').style.display = 'none';
 
-    document.getElementById('nameOfUser').innerHTML = `<h5 class="card-title" id="nameOfUser">${user.firstName} ${user.lastName}`;
-    document.getElementById('userEmail').innerHTML = `<h5 class="card-title" id="nameOfUser" style="font-size:0.775em;">${user.email}`;
-    document.getElementById('listOfUserPets').innerHTML = `<p class="card-text" id="listOfUserPets">
-        <a style="text-decoration:none;" class="link-dark" href="petDetail.html?petID=${pet.petID}"><mark style="border-radius: 10px;">${pet.petName}</a></mark>`;
+function writeToDiv(user, pets) {
+    // Display user information
+    document.getElementById('nameOfUser').innerHTML = `<h5 class="card-title" id="nameOfUser">${user.firstName} ${user.lastName}</h5>`;
+    document.getElementById('userEmail').innerHTML = `<p class="card-text" id="userEmail" style="font-size:0.775em;">${user.email}</p>`;
 
-};
+    // Display all pets
+    if (pets.length > 0) {
+        let petsHTML = '';
+        pets.forEach(pet => {
+            petsHTML += `
+                <p class="card-text" id="listOfUserPets">
+                    <a style="text-decoration:none;" class="link-dark" href="petDetail.html?petID=${pet._id}">
+                        <mark style="border-radius: 10px;">${pet.petName} (${pet.petType})</mark>
+                    </a>
+                </p>`;
+        });
+        document.getElementById('listOfUserPets').innerHTML = petsHTML;
+    } else {
+        document.getElementById('listOfUserPets').innerHTML = '<p>No pets found for this user.</p>';
+    }
+}
 
-
-
-
-document.addEventListener('DOMContentLoaded', async () => await fetchFunction(), false);
+document.addEventListener('DOMContentLoaded', fetchFunction, false);
