@@ -16,10 +16,10 @@ exports.routes = function (app) {
         }
     });
 
-    app.post('/api/user/create', userController.create);
-    app.post('/api/pet', PetController.savePet);
-    app.post('/api/med/:petId', MedController.saveMed);
-    app.put('/api/pet/:id', PetController.updatePet);
+    app.post('/api/user/create', userController.create); //working
+    app.post('/api/pet', PetController.savePet); //working
+    app.post('/api/med/:petId', MedController.saveMed); //working
+    app.put('/api/pet/:id', PetController.updatePet); // working
     app.put('/api/med/:id', MedController.updateMed);
     app.delete('/api/pet/:id', PetController.deletePet);
     app.delete('/api/med/:id', MedController.deleteMed);

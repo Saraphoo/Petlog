@@ -34,7 +34,7 @@ const saveMed = function(req , res){
 
 const getMed = async function(req, res){
     const id = req.params.id;
-    let medData = await med.findById(id);
+    let medData = await medication.findById(id);
     headers(res);
     console.log(Med);
     if(medData == null){
@@ -46,7 +46,7 @@ const getMed = async function(req, res){
 const getUserMed = async function(req , res) {
     let userId = req.auth.id;
     console.log(userId)
-    const userMed = await med.findOne({user: userId});
+    const userMed = await medication.findOne({user: userId});
     if(!userMed){
         res.status(200).send({});
     }
@@ -55,7 +55,7 @@ const getUserMed = async function(req , res) {
 
 const deleteMed = async function(req, res ){
     const id = req.params.id;
-    let medData = await med.findById(id);
+    let medData = await medication.findById(id);
     headers(res);
     if(medData == null){
         res.status(404).send({message:'Med not found'})
@@ -66,15 +66,28 @@ const deleteMed = async function(req, res ){
 }
 
 const updateMed = async function(req, res){
-    const id = req.params.id;
-    let medData = await med.findById(id);
-    headers(res);
-    if(medData == null){
-        res.status(404).send({message:'Med not found'})
-    }else{
-        medData.data = req.body;
-        medData.save();
-        res.status(200).send({message:'Save Successful'})
+    let updatemed = await medication.findById(req.params.id);
+    let medPet = req.body.pet;
+    let name = req.body.medName;
+    let type =req.body.medType;
+    let dosage = req.body.medDosage;
+    let dailyDosage = req.body.numberOfDailyDosage;
+    updatemed.pet = medPet;
+    updatemed.medName = name;
+    updatemed.medType = type;
+    updatemed.medDosage = dosage;
+    updatemed.numberOfDailyDosage = dailyDosage;
+
+    if (updatemed == null) {
+        res.send(404).send({ message: 'Please fill in all Medication info' })
+    } else {
+        try {
+            updatemed.save();
+            console.log(updatemed);
+            res.status(200).send({ id: updatemed._id });
+        } catch(error) {
+            res.status(500).send({ message: error.message });
+        }
     }
 }
 

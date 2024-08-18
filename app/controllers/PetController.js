@@ -67,15 +67,32 @@ const deletePet = async function (req, res) {
 }
 
 const updatePet = async function (req, res) {
-    const id = req.params._id;
-    let petData = await pet.findById(id);
+    let updatePet = await pet.findById(req.params.id);
+    let userId = req.body.user;
+    let name = req.body.petName;
+    let type = req.body.petType;
+    let breed = req.body.petBreed;
+    let sex = req.body.petSex;
+    let weight = req.body.petWeight;
+    let DOB = req.body.petDOB;
+    updatePet.petName = name;
+    updatePet.petType = type;
+    updatePet.petBreed = breed;
+    updatePet.petSex = sex;
+    updatePet.petWeight = weight;
+    updatePet.petDOB = DOB;
+    updatePet.user = userId;
     //headers(res);
-    if (petData == null) {
-        res.status(404).send({ message: 'Pet not found' })
+    if (updatePet == null) {
+        res.send(404).send({ message: 'Please fill in all Pet info' })
     } else {
-        petData.data = req.body;
-        petData.save();
-        res.status(200).send({ message: 'Save Successful' })
+        try {
+            updatePet.save();
+            console.log(updatePet);
+            res.status(200).send({ id: updatePet._id });
+        } catch(error) {
+            res.status(500).send({ message: error.message });
+        }
     }
 }
 
