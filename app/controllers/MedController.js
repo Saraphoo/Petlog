@@ -31,23 +31,21 @@ const saveMed = function(req , res){
 }
 
 
-
 const getMed = async function(req, res){
     const id = req.params.id;
     let medData = await medication.findById(id);
-    headers(res);
-    console.log(Med);
+    //headers(res);
     if(medData == null){
         res.status(404).send({message:'Med not found'})
     }else{
-        res.status(200).send(medData.data);
+        res.status(200).send(medData);
     }
 }
-const getUserMed = async function(req , res) {
-    let userId = req.auth.id;
-    console.log(userId)
-    const userMed = await medication.findOne({user: userId});
-    if(!userMed){
+const getPetMed = async function(req , res) {
+    let petId = req.params.id;
+    console.log(petId)
+    const petMed = await medication.findOne({pet: petId});
+    if(!petMed){
         res.status(200).send({});
     }
     res.status(200).send({data: userMed.data , id: userMed.id});
@@ -102,5 +100,5 @@ module.exports = {
     getMed,
     deleteMed,
     updateMed,
-    getUserMed
+    getPetMed
 };

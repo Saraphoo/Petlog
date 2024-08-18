@@ -33,14 +33,13 @@ const savePet = function (req, res) {
 }
 
 const getPet = async function (req, res) {
-    const id = req.params._id;
+    const id = req.params.id;
     let petData = await pet.findById(id);
     //headers(res);
-    console.log(Pet);
     if (petData == null) {
         res.status(404).send({ message: 'Pet not found' })
     } else {
-        res.status(200).send(petData.data);
+        res.status(200).send(petData);
     }
 }
 
