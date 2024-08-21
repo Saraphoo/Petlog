@@ -51,7 +51,7 @@ const login = async function (req, res) {
 
 }
 const getUser = async function (req, res) {
-  let user =  await User.findById(req.auth._id);
+  let user =  await User.findById(req.auth.id);
   console.log(user);
   res.status(200).send(user);
 }

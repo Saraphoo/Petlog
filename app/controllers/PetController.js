@@ -44,17 +44,17 @@ const getPet = async function (req, res) {
 }
 
 const getUserPet = async function (req, res) {
-    let userId = req.auth._id;
-    console.log(userId)
+    let userId = req.auth.id;
+    console.log(userId);
     const userPet = await pet.findOne({ user: userId });
     if (!userPet) {
         res.status(200).send({});
     }
-    res.status(200).send({ data: userPet.data, id: userPet.id });
+    res.status(200).send({ data: userPet, id: userPet.id });
 }
 
 const deletePet = async function (req, res) {
-    const id = req.params._id;
+    const id = req.params.id;
     let petData = await pet.findById(id);
     //headers(res);
     if (petData == null) {
